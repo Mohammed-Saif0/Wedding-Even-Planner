@@ -1,14 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Admin;
 
 import Database.DBQuery;
+import com.oreilly.servlet.MultipartRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.util.Enumeration;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,10 +15,12 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author moham
+ * @author 91988
  */
 public class Add_venue extends HttpServlet {
-
+   
+String path="C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding_planner/web/img/";
+String paramname="",name="",location="",capacity="",category="",price="";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -34,24 +35,86 @@ public class Add_venue extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String name = request.getParameter("name");
-            String location = request.getParameter("location");
-            String category = request.getParameter("category");
-            String capacity = request.getParameter("capacity");
-            String price = request.getParameter("price");
-            
-            DBQuery db = new DBQuery();
-            int i=db.add_venue(name, location, category, capacity, price);
-            if(i==0)
-                System.out.println("falied to add venue");
-            else
+           try{
+
+           
+           MultipartRequest multi = new MultipartRequest(request, path,	10 * 1024 * 1024);
+           // to get all the parameters 
+           Enumeration params = multi.getParameterNames();
+           while (params.hasMoreElements()) 
             {
-                System.out.println("Successfully added venue");
-                 RequestDispatcher rd = null;
-                rd = request.getRequestDispatcher("./admin/admin_home.jsp");
-                rd.forward(request, response);
-            }
+                paramname = (String) params.nextElement();
+                if(paramname.equalsIgnoreCase("name"))
+                {
+                        name=multi.getParameter(paramname);
+                }
                 
+                if(paramname.equalsIgnoreCase("location"))
+                {
+                        location=multi.getParameter(paramname);
+                }
+                if(paramname.equalsIgnoreCase("category"))
+                {
+                        category=multi.getParameter(paramname);
+                }
+                if(paramname.equalsIgnoreCase("capacity"))
+                {
+                        capacity=multi.getParameter(paramname);
+                }
+                if(paramname.equalsIgnoreCase("price"))
+                {
+                        price=multi.getParameter(paramname);
+                }
+            }
+           
+           
+           
+           Enumeration files = multi.getFileNames();	
+            while (files.hasMoreElements()) 
+            {
+                paramname = (String) files.nextElement();
+                if(paramname != null && paramname.equals("file_name"))
+                {
+                               
+                    String filename = multi.getFilesystemName(paramname);
+                    String fPath = path+filename;
+                    System.out.println("report>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"+fPath);
+                    if(!fPath.contains("null"))  
+                    {
+                       File file = new File(fPath);
+                       FileInputStream fsR = new FileInputStream(file);
+                       
+                       
+
+                       String newPath=path+name+".png";
+                       System.out.println("png path "+newPath);
+                       FileOutputStream foutReport=new FileOutputStream(newPath);
+                       int j=0;
+                          while((j=fsR.read())!=-1)
+                          {
+
+                          foutReport.write((byte)j);
+
+                          }
+                          fsR.close();
+                          foutReport.close();
+                          file.delete();
+                    }
+                }  
+            }
+                        
+          
+           
+           System.out.println(capacity);
+           System.out.println(price);
+           DBQuery db = new DBQuery();
+           db.add_venue(name, location, category, capacity, price);
+           
+           
+           }catch(Exception e)
+           {
+           e.printStackTrace();
+           }
         }
     }
 
@@ -95,3 +158,5 @@ public class Add_venue extends HttpServlet {
     }// </editor-fold>
 
 }
+
+

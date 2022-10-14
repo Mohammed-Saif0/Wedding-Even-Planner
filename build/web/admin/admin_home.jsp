@@ -27,9 +27,10 @@
   </button>
 </p>
 <div class="collapse mx-5 " id="collapseExample">
-    <form action="./Add_venue" method="post">
+    <form action="${pageContext.request.contextPath}/Add_venue" enctype="multipart/form-data" method="post" >
   <div class="form-row ">
     <div class="col">
+       
     <label for="exampleInputEmail1">Venue Name</label>
     <input type="text" name='name' class="form-control" id="exampleInputEmail1"  placeholder="Venue Name">
     </div>
@@ -55,6 +56,9 @@
     <input type="number" name ='price' class="form-control form-text-inline" id="price" placeholder="Venue Price">
   </div>
    </div>
+        
+         <input type="file" name="file_name" />
+         
   <button type="submit" class="btn btn-outline-success ">ADD</button>
 </form>
 </div>

@@ -12,12 +12,12 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding%20Planner/src/java/Database/DBQuery.java</file>
-            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding%20Planner/src/java/User/booking.java</file>
-            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding%20Planner/web/templates/header.jsp</file>
-            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding%20Planner/web/user/show_orders.jsp</file>
-            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding%20Planner/src/java/Database/DBConnection.java</file>
-            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding%20Planner/web/user/view_bookings.jsp</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding_planner/web/user/user_home.jsp</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding_planner/web/admin/admin_home.jsp</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding_planner/src/java/Admin/Add_venue.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding_planner/src/java/User/Logout.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding_planner/src/java/Database/DBQuery.java</file>
+            <file>file:/C:/Users/moham/OneDrive/Documents/NetBeansProjects/Wedding_planner/web/templates/header.jsp</file>
         </group>
     </open-files>
 </project-private>

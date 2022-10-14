@@ -54,7 +54,9 @@ public class DBQuery {
     public int add_venue(String name,String location,String category,String capacity,String price){
         int i=0;
         try{
-            String q = "insert into venue (venue_name,location,catogery,capacity,price) values('"+name+"','"+location+"','"+category+"','"+capacity+"','"+price+"')";
+            int cap = Integer.parseInt(capacity);
+            int pri = Integer.parseInt(price);
+            String q = "insert into venue (venue_name,location,catogery,capacity,price) values('"+name+"','"+location+"','"+category+"',"+cap+","+pri+")";
             con = DBConnection.getConnection();
             st = con.createStatement();
             i = st.executeUpdate(q);

@@ -34,7 +34,7 @@
         %>    
                 <div class="col">
 <div class="card mx-3 my-3" style="min-width:15vw;">
-  <img src="../sam_s.png" class="card-img-top" alt="..." style="min-height: 30vh;">
+  <img src="${pageContext.request.contextPath}/img/<%=data[1]%>.png" class="card-img-top" alt="..." style="min-height: 30vh;">
   <div class="card-body">
     <h5 class="card-title"><%=data[1]%></h5>
     <p class="card-text"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
