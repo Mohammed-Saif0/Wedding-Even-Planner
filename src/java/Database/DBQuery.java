@@ -340,10 +340,10 @@ public class DBQuery {
         return al;
     }
     
-     public int completed_service(String username,String service,String category,String sub){
+     public int completed_service(String username,String service,String category){
         int i=0;
         try{
-            String q = "update services set is_accepted=1 and is_booked=0 where user_name='"+username+"' and service='"+service+"' and category='"+category+"' and `sub-category`='"+sub+"'";
+            String q = "update services set is_accepted=1 where user_name='"+username+"' and service='"+service+"' and category='"+category+"'";
             con = DBConnection.getConnection();
             st = con.createStatement();
             i = st.executeUpdate(q);

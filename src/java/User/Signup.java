@@ -8,10 +8,12 @@ package User;
 import Database.DBQuery;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,10 +42,10 @@ public class Signup extends HttpServlet {
         
         DBQuery db = new DBQuery();
         int i =db.user_signup(username, first_name, last_name, phone, email, password);
-        if(i==0)
-            System.out.println("Error whlie done");
-        else
-            System.out.println("successfully done");
+       
+        RequestDispatcher rd = null;
+                rd = request.getRequestDispatcher("./user/user_login.jsp");
+                rd.forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

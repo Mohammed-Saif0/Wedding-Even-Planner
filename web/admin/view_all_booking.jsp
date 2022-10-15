@@ -85,7 +85,7 @@
           <form method='post' action='${pageContext.request.contextPath}/completed'>
               <input type='hidden' value='<%=data[0]%>' name='venue_id'/>
               <input type ='hidden' value='<%=data[6]%>' name='user_name'/>
-              <button type ='submit' class="btn btn-outline-success btn-sm"> Completed </button>
+              <button type ='submit' class="btn btn-outline-success btn-sm"> Accept </button>
           </form>
       </td>
     </tr>
@@ -130,7 +130,7 @@
               <input type="hidden" value="<%=data[0]%>" name="service" />
               <input type="hidden" value="<%=data[1]%>" name="category" />
               <input type="hidden" value="<%=data[2]%>" name="sub" />
-              <button type ='submit' class="btn btn-outline-success btn-sm"> Completed </button>
+              <button type ='submit' class="btn btn-outline-success btn-sm"> Accept </button>
           </form>
       </td>
     </tr>

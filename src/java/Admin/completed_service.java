@@ -40,7 +40,7 @@ public class completed_service extends HttpServlet {
            String username = request.getParameter("username");
            
            DBQuery db = new DBQuery();
-           db.completed_service(username,service,category,sub);
+           db.completed_service(username,service,category);
            RequestDispatcher rd = null;
                 rd = request.getRequestDispatcher("./admin/view_all_booking.jsp");
                 rd.forward(request, response);
