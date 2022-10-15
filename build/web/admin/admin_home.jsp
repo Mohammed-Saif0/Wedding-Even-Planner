@@ -19,7 +19,38 @@
 
     </head>
     <body>
-        <jsp:include page="../templates/header.jsp" />
+        <nav class="navbar navbar-expand-lg navbar-light bg-light x-3">
+  <a class="navbar-brand px-2" >Wedding Planner</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav">
+        <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/admin_home.jsp">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/view_all_booking.jsp">Request Bookings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/completed_booking.jsp">Accepted Bookings</a>
+      </li>
+    </ul>
+  </div>
+  <div class="justify-content-end">
+      
+      
+   <%
+            String username = (String)session.getAttribute("username");
+        %>
+        Welcome <%=username%>     
+        
+  </div>
+        <form method="post" action="${pageContext.request.contextPath}/Logout">
+            <button type="submit" class="btn btn-outline-danger btn-sm"  style="margin-left: 20px" /> LogOut </button>
+        </form>
+</nav>
+       
 
         <p>
   <button class="btn btn-outline-primary mt-3 ml-5  " type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -106,34 +137,34 @@
      
      
 </div>
-  
-   <div id="count" style="display:none;" ><%=count%></div>
-  
-  <script>
-    function confirm_delete(){
-        let x = confirm("Do you want to delete ?");
-        return x;
-    }
-    
-    let count = document.getElementById("count");
-    count = Number(count.innerHTML)
-    console.log(count)
-    for(let i=0;i<count;i++){
-      let ele = document.getElementById("rupees"+i);
- 
-    let number = Number(ele.innerHTML)
-    ele.innerHTML = (number.toLocaleString('en-IN',{
-            maximumFractionDigits: 0,
-            style:'currency',
-            currency:'INR'
-    }));   
-    
-    }   
-    
-   
-   
-    
-</script>
+
+    <div id="count" style="display:none;" ><%=count%></div>
+
+   <script>
+     function confirm_delete(){
+         let x = confirm("Do you want to delete ?");
+         return x;
+     }
+
+     let count = document.getElementById("count");
+     count = Number(count.innerHTML)
+     console.log(count)
+     for(let i=0;i<count;i++){
+       let ele = document.getElementById("rupees"+i);
+
+     let number = Number(ele.innerHTML)
+     ele.innerHTML = (number.toLocaleString('en-IN',{
+             maximumFractionDigits: 0,
+             style:'currency',
+             currency:'INR'
+     }));   
+
+     }   
+
+
+
+
+ </script>
 
     </body>
 </html>

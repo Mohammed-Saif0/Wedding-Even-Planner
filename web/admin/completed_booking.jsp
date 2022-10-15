@@ -1,6 +1,6 @@
 <%-- 
-    Document   : admin_home
-    Created on : 9-Oct-2022, 8:16:35 PM
+    Document   : view_all_booking
+    Created on : 15-Oct-2022, 10:17:42 AM
     Author     : moham
 --%>
 
@@ -19,7 +19,7 @@
 
     </head>
     <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light x-3">
+               <nav class="navbar navbar-expand-lg navbar-light bg-light x-3">
   <a class="navbar-brand px-2" >Wedding Planner</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -29,7 +29,7 @@
         <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/admin/admin_home.jsp">Home</a>
       </li>
-      <li class="nav-item">
+       <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/admin/view_all_booking.jsp">Request Bookings</a>
       </li>
       <li class="nav-item">
@@ -50,66 +50,23 @@
             <button type="submit" class="btn btn-outline-danger btn-sm"  style="margin-left: 20px" /> LogOut </button>
         </form>
 </nav>
-       
-
-        <p>
-  <button class="btn btn-outline-primary mt-3 ml-5  " type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-    Add Venue
-  </button>
-</p>
-<div class="collapse mx-5 " id="collapseExample">
-    <form action="${pageContext.request.contextPath}/Add_venue" enctype="multipart/form-data" method="post" >
-  <div class="form-row ">
-    <div class="col">
-       
-    <label for="exampleInputEmail1">Venue Name</label>
-    <input type="text" name='name' class="form-control" id="exampleInputEmail1"  placeholder="Venue Name">
-    </div>
-    <div class="col">
-    <label for="exampleInputPassword1">Venue Location</label>
-    <input type="text" name ='location' class="form-control form-text-inline" id="exampleInputPassword1" placeholder="location">
-    </div>
-      <div class="col">
-          
-    <label for="exampleFormControlSelect1">AC/Non-AC</label>
-    <select class="form-control" name='category' id="exampleFormControlSelect1">
-      <option value='AC'>AC</option>
-      <option value='Non-AC'>Non-AC</option>
-    </select>
-      </div>
-
-  <div class="col">
-    <label for="venue_capacity">Capacity</label>
-    <input type="number" name ='capacity' class="form-control form-text-inline" id="venue_capacity" placeholder="Venue Capacity">
-  </div>
-      <div class="col">
-    <label for="price">Price</label>
-    <input type="number" name ='price' class="form-control form-text-inline" id="price" placeholder="Venue Price">
-  </div>
-   </div>
-        
-         <input type="file" name="file_name" />
-         
-  <button type="submit" class="btn btn-outline-success ">ADD</button>
-</form>
-</div>
-
-<div>
+        <div>
         
 <table class="table table-striped mx-3 mr-3">
   <thead>
     <tr>
-      <th scope="col">Venue Name</th>
+      <th scope="col">User Name</th>
+       <th scope="col">Venue Name</th>
       <th scope="col">Location</th>
       <th scope="col">AC/Non-AC</th>
       <th scope="col">Capacity</th>
       <th scope="col">Prize</th>
-      <th scope="col">Delete</th>
+      <th scope="col">Status</th>
     </tr>
   </thead>
     <%
         DBQuery db = new DBQuery();
-        ArrayList al = db.get_venues();
+        ArrayList al = db.get_all_completed();
         int count =0;
         for(int i=0;i<al.size();i++){
             String[] data = al.get(i).toString().split("#");
@@ -118,28 +75,62 @@
 
   <tbody>
     <tr>
+        <td><%=data[6]%></td>
       <td><%=data[1]%></td>
       <td><%=data[2]%></td>
       <td><%=data[3]%></td>
       <td><%=data[4]%></td>
       <td id="rupees<%=i%>"><%=data[5]%></td>
       <td>
-          <form method="post" action="./Delete_venue" onsubmit="return confirm_delete();">
-              <input type="hidden" value ="<%=data[0]%>" name="venue_id"/>
-              <button type="submit" class="btn btn-outline-danger "> Delete </button>
-          </form>
+         Completed
       </td>
     </tr>
    <%}%>
   </tbody>
 </table>
-        
-     
+           
+</div>
+  
+    <table class="table table-striped mx-3 mr-3">
+  <thead>
+    <tr>
+      <th scope="col">User Name</th>
+       <th scope="col">Service</th>
+      <th scope="col">Category</th>
+      <th scope="col">Sub-Category</th>
+      <th scope="col">Prize</th>
+      <th scope="col">Completed</th>
+    </tr>
+  </thead>
+    <%
+       
+        ArrayList ai = db.get_all_booked_services(1);
+        int order =0;
+        for(int i=0;i<ai.size();i++){
+            String[] data = ai.get(i).toString().split("#");
+            order++;
+        %>
+
+  <tbody>
+    <tr>
+        <td><%=data[4]%></td>
+      <td><%=data[0]%></td>
+      <td><%=data[1]%></td>
+      <td><%=data[2]%></td>
+  
+      <td id="rup<%=i%>"><%=data[3]%></td>
+      <td>
+          Completed
+      </td>
+    </tr>
+   <%}%>
+  </tbody>
+</table>
      
 </div>
-
+  
     <div id="count" style="display:none;" ><%=count%></div>
-
+ <div id="order" style="display:none;" ><%=order%></div>
    <script>
      function confirm_delete(){
          let x = confirm("Do you want to delete ?");
@@ -161,10 +152,26 @@
 
      }   
 
+let order = document.getElementById("order");
+     order = Number(order.innerHTML)
+     
+for(let i=0;i<order;i++){
+       let ele = document.getElementById("rup"+i);
+ let number = Number(ele.innerHTML)
+     ele.innerHTML = (number.toLocaleString('en-IN',{
+             maximumFractionDigits: 0,
+             style:'currency',
+             currency:'INR'
+     }));   
+
+     }  
 
 
 
  </script>
+    </body>
+</html>
 
+        
     </body>
 </html>

@@ -21,7 +21,7 @@
     <body>
         
 <nav class="navbar navbar-expand-lg navbar-light bg-light x-3">
-  <a class="navbar-brand" href="#">Navbar</a>
+  <a class="navbar-brand px-2" >Wedding Planner</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -37,7 +37,10 @@
         <a class="nav-link" href="${pageContext.request.contextPath}/user/show_services.jsp">Services</a>
       </li>
 <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/user/view_bookings.jsp">Bookings</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/view_bookings.jsp">Pending Bookings</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/view_completed_booking.jsp">Completed Bookings</a>
       </li>
     </ul>
   </div>

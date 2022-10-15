@@ -1,11 +1,11 @@
 <%-- 
-    Document   : view_bookings
-    Created on : 13-Oct-2022, 9:28:20 PM
+    Document   : view_completed_booking
+    Created on : 15-Oct-2022, 11:17:52 AM
     Author     : moham
 --%>
 
-<%@page import="java.util.ArrayList"%>
 <%@page import="Database.DBQuery"%>
+<%@page import="java.util.ArrayList"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -14,7 +14,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <jsp:include page="../templates/header.jsp" />
+          <jsp:include page="../templates/header.jsp" />
        
         
         
@@ -32,7 +32,7 @@
         <%
              DBQuery db = new DBQuery();
             String username = (String) session.getAttribute("username");
-            ArrayList al = db.get_booked_venues(username);
+            ArrayList al = db.get_completed_booked_venue(username);
             int count =0;
             for(int i=0;i<al.size();i++){
                 count++;
@@ -48,13 +48,9 @@
       <td><%=data[1]%></td>
       <td><%=data[2]%></td>
       <td><%=data[3]%></td>
-      <td>
-        
-                  <div class="alert alert-danger" role="alert">
-  Pending
-</div>
-          
-      </td>
+      <td><div class="alert alert-success"  role="alert">
+  Completed
+</div></td>
     </tr>
   </tbody>
 
@@ -69,14 +65,14 @@
     <tr>
       <th scope="col">Sevice</th>
       <th scope="col">Catogery</th>
-        <th scope="col">Sub-Catogery</th>     
-        <th scope="col">Status</th>
+        <th scope="col">Sub-Catogery</th> 
+        <th scope="col">Status</th>    
     </tr>
   </thead>
      
    <% 
        String user_name = (String)session.getAttribute("username");
-    ArrayList data = db.get_boooked_services(username,0);
+    ArrayList data = db.get_boooked_services(username,1);
     for(int i=0;i<data.size();i++){
     String[] d = data.get(i).toString().split("#");
    %>
@@ -84,12 +80,11 @@
   <tbody>
     <tr>
       <td scope="row"><%=d[0]%></th>
-      <td><%=d[1]%></td>
+      <td><%=d[1]%></td> 
       <td><%=d[2]%></td>
-      <td>        <div class="alert alert-danger" role="alert">
-  Pending
+      <td><div class="alert alert-success"  role="alert">
+  Completed
 </div></td>
-  
      
     </tr>
   </tbody>

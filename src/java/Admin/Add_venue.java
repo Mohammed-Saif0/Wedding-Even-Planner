@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Enumeration;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -109,7 +110,9 @@ String paramname="",name="",location="",capacity="",category="",price="";
            System.out.println(price);
            DBQuery db = new DBQuery();
            db.add_venue(name, location, category, capacity, price);
-           
+           RequestDispatcher rd = null;
+                rd = request.getRequestDispatcher("./admin/admin_home.jsp");
+                rd.forward(request, response);
            
            }catch(Exception e)
            {

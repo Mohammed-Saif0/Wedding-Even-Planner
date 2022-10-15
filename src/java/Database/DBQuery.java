@@ -246,7 +246,7 @@ public class DBQuery {
     public ArrayList get_booked_venues(String username){
         ArrayList al = new ArrayList();
         try{
-            String q = "select * from venue where venue_id IN (select venue_id from venue_booking_queue where user_name='"+username+"' and is_booked=1)";
+            String q = "select * from venue where venue_id IN (select venue_id from venue_booking_queue where user_name='"+username+"' and is_booked=1 and is_accepted=0)";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -267,10 +267,10 @@ public class DBQuery {
         return al;
     }
     
-     public ArrayList get_boooked_services(String username){
+     public ArrayList get_boooked_services(String username,int num){
         ArrayList al = new ArrayList();
         try{
-            String q = "select * from services where user_name = '"+username+"' and is_booked=1";
+            String q = "select * from services where user_name = '"+username+"' and is_booked=1 and is_accepted="+num+"";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -288,5 +288,140 @@ public class DBQuery {
         }
         return al;
     }   
+     
+    public ArrayList get_all_booked_services(int num){
+        ArrayList al = new ArrayList();
+        try{
+            String q = "select * from services where is_booked=1 and is_accepted="+num+"";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                String username = rs.getString("user_name");
+                 String service = rs.getString("service");
+                String cat = rs.getString("category");
+                String sub = rs.getString("sub-category");
+                String price = rs.getString("price");
+                String data = service+"#"+cat+"#"+sub+"#"+price+"#"+username;
+                al.add(data);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }   
+     
+    public ArrayList view_all_user_bookings(){
+        ArrayList al = new ArrayList();
+        
+        try{
+            String q = "select b.user_name, v.venue_id,v.venue_name,v.location,v.catogery,v.capacity,v.price from venue v natural join venue_booking_queue b where is_booked=1 and is_accepted=0";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                String username = rs.getString("user_name");
+                System.out.println(username);
+                String id = rs.getString("venue_id");
+                String name = rs.getString("venue_name");
+                String location = rs.getString("location");
+                String catogery = rs.getString("catogery");
+                String capacity = rs.getString("capacity");
+                String price = rs.getString("price");
+                
+                String data = id+"#"+name+"#"+location+"#"+catogery+"#"+capacity+"#"+price+"#"+username;
+                al.add(data);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }
+    
+     public int completed_service(String username,String service,String category,String sub){
+        int i=0;
+        try{
+            String q = "update services set is_accepted=1 and is_booked=0 where user_name='"+username+"' and service='"+service+"' and category='"+category+"' and `sub-category`='"+sub+"'";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            i = st.executeUpdate(q);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        return i;
+    }
+    
+    
+    public int completed(String username,String venue_id){
+        int i=0;
+        int id = Integer.parseInt(venue_id);
+        try{
+            String q = "update venue_booking_queue set is_accepted=1 where user_name='"+username+"' and venue_id='"+id+"'";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            i = st.executeUpdate(q);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+        return i;
+    }
+    
+    public ArrayList get_all_completed(){
+        ArrayList al = new ArrayList();
+        try{
+            String q =  "select b.user_name, v.venue_id,v.venue_name,v.location,v.catogery,v.capacity,v.price from venue v natural join venue_booking_queue b where is_booked=1 and is_accepted=1";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                String username = rs.getString("user_name");
+                System.out.println(username);
+                String id = rs.getString("venue_id");
+                String name = rs.getString("venue_name");
+                String location = rs.getString("location");
+                String catogery = rs.getString("catogery");
+                String capacity = rs.getString("capacity");
+                String price = rs.getString("price");
+                
+                String data = id+"#"+name+"#"+location+"#"+catogery+"#"+capacity+"#"+price+"#"+username;
+                al.add(data);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }
+    
+    public ArrayList get_completed_booked_venue(String username){
+        ArrayList al = new ArrayList();
+        try{
+            String q = "select * from venue where venue_id IN (select venue_id from venue_booking_queue where user_name='"+username+"' and is_booked=1 and is_accepted=1)";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                String name = rs.getString("venue_name");
+                String location = rs.getString("location");
+                String catogery = rs.getString("catogery");
+                String capacity = rs.getString("capacity");
+                String price = rs.getString("price");
+                
+                String data = name+"#"+location+"#"+catogery+"#"+capacity+"#"+price;
+                al.add(data);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }
+    
     
 }

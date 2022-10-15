@@ -26,7 +26,7 @@
       <th scope="col">Location</th>
         <th scope="col">AC/Non-AC</th>
       <th scope="col">Capacity</th>
-      
+      <th scope="col">Status</th>
     </tr>
   </thead>
         <%
@@ -48,7 +48,13 @@
       <td><%=data[1]%></td>
       <td><%=data[2]%></td>
       <td><%=data[3]%></td>
-     
+      <td>
+        
+                  <div class="alert alert-danger" role="alert">
+  Pending
+</div>
+          
+      </td>
     </tr>
   </tbody>
 
@@ -63,13 +69,14 @@
     <tr>
       <th scope="col">Sevice</th>
       <th scope="col">Catogery</th>
-        <th scope="col">Sub-Catogery</th>      
+        <th scope="col">Sub-Catogery</th>     
+        <th scope="col">Status</th>
     </tr>
   </thead>
      
    <% 
        String user_name = (String)session.getAttribute("username");
-    ArrayList data = db.get_boooked_services(username);
+    ArrayList data = db.get_boooked_services(username,0);
     for(int i=0;i<data.size();i++){
     String[] d = data.get(i).toString().split("#");
    %>
@@ -79,6 +86,9 @@
       <td scope="row"><%=d[0]%></th>
       <td><%=d[1]%></td>
       <td><%=d[2]%></td>
+      <td>        <div class="alert alert-danger" role="alert">
+  Pending
+</div></td>
   
      
     </tr>

@@ -77,6 +77,7 @@
     </div>
    
     <div id="count" style="display:none;"><%=count%></div>
+    <jsp:include page="../templates/footer.jsp" />
      <script>
     function confirm_delete(){
         let x = confirm("Do you want to delete ?");
