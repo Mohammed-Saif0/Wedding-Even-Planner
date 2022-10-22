@@ -1,12 +1,10 @@
-package User;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package User;
 
-import Database.DBQuery;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
@@ -14,12 +12,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author moham
  */
-public class booking extends HttpServlet {
+public class proceed_payment extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,15 +34,13 @@ public class booking extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            String username = request.getParameter("username");
-            DBQuery db = new DBQuery();
-            db.book_venue(username);
-            db.book_service(username);
-            db.delete_service_added(username);
-            db.delete_venues_added(username);
+            String cost = request.getParameter("cost");
+            HttpSession session = request.getSession();
+            session.setAttribute("cost", cost); 
             RequestDispatcher rd = null;
-                rd = request.getRequestDispatcher("./user/show_orders.jsp");
+                rd = request.getRequestDispatcher("./user/payment_page.jsp");
                 rd.forward(request, response);
+            
         }
     }
 

@@ -33,7 +33,10 @@
         <a class="nav-link" href="${pageContext.request.contextPath}/admin/view_all_booking.jsp">Request Bookings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/admin/completed_booking.jsp">Accepted Bookings</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/completed_booking.jsp">Pending Payment</a>
+      </li>
+            <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/payment_completed.jsp">Payments</a>
       </li>
     </ul>
   </div>
@@ -131,6 +134,9 @@
   
     <div id="count" style="display:none;" ><%=count%></div>
  <div id="order" style="display:none;" ><%=order%></div>
+ 
+
+ 
    <script>
      function confirm_delete(){
          let x = confirm("Do you want to delete ?");

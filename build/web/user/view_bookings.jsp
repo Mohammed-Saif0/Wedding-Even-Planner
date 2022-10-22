@@ -76,7 +76,7 @@
      
    <% 
        String user_name = (String)session.getAttribute("username");
-    ArrayList data = db.get_boooked_services(username,0);
+    ArrayList data = db.get_booked_services(username);
     for(int i=0;i<data.size();i++){
     String[] d = data.get(i).toString().split("#");
    %>

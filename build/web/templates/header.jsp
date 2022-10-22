@@ -37,10 +37,13 @@
         <a class="nav-link" href="${pageContext.request.contextPath}/user/show_services.jsp">Services</a>
       </li>
 <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/user/view_bookings.jsp">Pending Bookings</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/view_bookings.jsp">Pending Approvals</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/user/view_completed_booking.jsp">Completed Bookings</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/view_completed_booking.jsp">Approved Bookings</a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/user/paid_bookings.jsp">Transactions</a>
       </li>
     </ul>
   </div>

@@ -130,7 +130,7 @@
     <h6 class="card-text">Overall Price - <span id="price"></span></h6>
     <form method="get" action="${pageContext.request.contextPath}/booking" onsubmit="return validate();">
         <input type="hidden" value="<%=user_name%>" name="username"/>
-    <button class="btn btn-outline-success">Pay and Book</button>
+    <button class="btn btn-outline-success">Send for Approval</button>
     </form>
   </div>
 </div>

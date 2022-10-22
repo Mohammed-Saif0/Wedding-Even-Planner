@@ -1,6 +1,6 @@
 <%-- 
-    Document   : view_all_booking
-    Created on : 15-Oct-2022, 10:17:42 AM
+    Document   : payment_completed
+    Created on : 21-Oct-2022, 7:32:43 PM
     Author     : moham
 --%>
 
@@ -19,7 +19,19 @@
 
     </head>
     <body>
-               <nav class="navbar navbar-expand-lg navbar-light bg-light x-3">
+     
+            
+            
+            <%-- 
+    Document   : paid_bookings
+    Created on : 22-Oct-2022, 12:11:56 PM
+    Author     : moham
+--%>
+
+
+        
+        
+                       <nav class="navbar navbar-expand-lg navbar-light bg-light x-3">
   <a class="navbar-brand px-2" >Wedding Planner</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -29,7 +41,7 @@
         <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/admin/admin_home.jsp">Home</a>
       </li>
-       <li class="nav-item">
+      <li class="nav-item">
         <a class="nav-link" href="${pageContext.request.contextPath}/admin/view_all_booking.jsp">Request Bookings</a>
       </li>
       <li class="nav-item">
@@ -53,131 +65,128 @@
             <button type="submit" class="btn btn-outline-danger btn-sm"  style="margin-left: 20px" /> LogOut </button>
         </form>
 </nav>
-        <div>
-        
-<table class="table table-striped mx-3 mr-3">
+ <p>
+    
+ <div class="container">
+<% 
+    DBQuery db = new DBQuery();
+    
+    ArrayList ai=db.get_all_transactions();
+    int cou =0;
+    for(int j=0;j<ai.size();j++){
+        String[] val = ai.get(j).toString().split("#");
+        cou++;
+%>
+
+<button class="btn btn-primary" style="padding-left:20vw;padding-right: 20vw" type="button" data-toggle="collapse" data-target="#collapseExample<%=cou%>" aria-expanded="false" aria-controls="collapseExample">
+    Transaction id : <%=val[0]%> | Amount :<span id="rupe<%=cou%>"> <%=val[2]%> </span>| User_name : <%=val[1] %> | Date:<%=val[3]%>
+  </button>
+</p>
+<div class="collapse" id="collapseExample<%=cou%>">
+  <div class="card card-body">
+       <table class="table">
   <thead>
     <tr>
-      <th scope="col">User Name</th>
-       <th scope="col">Venue Name</th>
+      <th scope="col">Venue Name</th>
       <th scope="col">Location</th>
-      <th scope="col">AC/Non-AC</th>
+        <th scope="col">AC/Non-AC</th>
       <th scope="col">Capacity</th>
-      <th scope="col">Prize</th>
-      <th scope="col">Status</th>
+     
     </tr>
   </thead>
-    <%
-        DBQuery db = new DBQuery();
-        ArrayList al = db.get_all_completed();
-        int count =0;
-        for(int i=0;i<al.size();i++){
-            String[] data = al.get(i).toString().split("#");
-            count++;
+        <%
+             
+            
+            ArrayList al = db.get_paid_venues(Integer.parseInt(val[0]));
+            int count =0;
+            for(int i=0;i<al.size();i++){
+                count++;
+                String[] data = al.get(i).toString().split("#");
         %>
+        
+               
 
+ 
   <tbody>
     <tr>
-        <td><%=data[6]%></td>
+      <td scope="row"><%=data[0]%></th>
       <td><%=data[1]%></td>
       <td><%=data[2]%></td>
       <td><%=data[3]%></td>
-      <td><%=data[4]%></td>
-      <td id="rupees<%=i%>"><%=data[5]%></td>
-      <td>
-         Completed
-      </td>
+
     </tr>
-   <%}%>
   </tbody>
-</table>
-           
-</div>
-  
-    <table class="table table-striped mx-3 mr-3">
+<%}%>  
+  </table>
+  <table class="table">
+       
   <thead>
     <tr>
-      <th scope="col">User Name</th>
-       <th scope="col">Service</th>
-      <th scope="col">Category</th>
-      <th scope="col">Sub-Category</th>
-      <th scope="col">Prize</th>
-      <th scope="col">Completed</th>
+      <th scope="col">Sevice</th>
+      <th scope="col">Catogery</th>
+        <th scope="col">Sub-Catogery</th>     
+        
     </tr>
   </thead>
-    <%
-       
-        ArrayList ai = db.get_all_booked_services(1);
-        int order =0;
-        for(int i=0;i<ai.size();i++){
-            String[] data = ai.get(i).toString().split("#");
-            order++;
-        %>
+     
+   <% 
+    ArrayList di = db.get_all_paid_services(Integer.parseInt(val[0]));
+    for(int z=0;z<di.size();z++){
+    String[] d = di.get(z).toString().split("#");
+   %>
 
   <tbody>
     <tr>
-        <td><%=data[4]%></td>
-      <td><%=data[0]%></td>
-      <td><%=data[1]%></td>
-      <td><%=data[2]%></td>
+      <td scope="row"><%=d[0]%></th>
+      <td><%=d[1]%></td>
+      <td><%=d[2]%></td>
+     
   
-      <td id="rup<%=i%>"><%=data[3]%></td>
-      <td>
-          Completed
-      </td>
+     
     </tr>
-   <%}%>
   </tbody>
-</table>
-     
-</div>
-  
-    <div id="count" style="display:none;" ><%=count%></div>
- <div id="order" style="display:none;" ><%=order%></div>
+ 
+ <%}%>
+        
+        </table>
+   
+     </div>
+       
+        
+      </div>
+            <%}%>  
+        
+       
+        
+          
  
 
- 
-   <script>
-     function confirm_delete(){
-         let x = confirm("Do you want to delete ?");
-         return x;
-     }
 
-     let count = document.getElementById("count");
-     count = Number(count.innerHTML)
-     console.log(count)
-     for(let i=0;i<count;i++){
-       let ele = document.getElementById("rupees"+i);
-
-     let number = Number(ele.innerHTML)
-     ele.innerHTML = (number.toLocaleString('en-IN',{
-             maximumFractionDigits: 0,
-             style:'currency',
-             currency:'INR'
-     }));   
-
-     }   
-
-let order = document.getElementById("order");
-     order = Number(order.innerHTML)
+    
      
-for(let i=0;i<order;i++){
-       let ele = document.getElementById("rup"+i);
- let number = Number(ele.innerHTML)
-     ele.innerHTML = (number.toLocaleString('en-IN',{
-             maximumFractionDigits: 0,
-             style:'currency',
-             currency:'INR'
-     }));   
+            <div id="count" style="display:none"><%=cou%></div>    
+<script>
+    let ele = document.getElementById("count")
+    let num = Number(ele.innerHTML)
+    console.log(num)
+    for(let i =1;i<=num;i++)
+    {
+        let e = document.getElementById("rupe"+i)
+      
+ 
+    let number = Number(e.innerHTML)
+    e.innerHTML = (number.toLocaleString('en-IN',{
+            maximumFractionDigits: 0,
+            style:'currency',
+            currency:'INR'
+    }));   
+    
+    }
+</script>
 
-     }  
-
-
-
- </script>
     </body>
 </html>
 
-        
+           
     </body>
 </html>

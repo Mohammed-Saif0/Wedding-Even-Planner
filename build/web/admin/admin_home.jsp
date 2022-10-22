@@ -33,7 +33,10 @@
         <a class="nav-link" href="${pageContext.request.contextPath}/admin/view_all_booking.jsp">Request Bookings</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/admin/completed_booking.jsp">Accepted Bookings</a>
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/completed_booking.jsp">Pending Payments</a>
+      </li>
+            <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/admin/payment_completed.jsp">Payments</a>
       </li>
     </ul>
   </div>

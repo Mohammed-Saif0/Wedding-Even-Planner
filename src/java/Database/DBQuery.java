@@ -123,7 +123,7 @@ public class DBQuery {
         ArrayList al = new ArrayList();
         try{
             System.out.println(username);
-            String q="select * from venue where venue_id IN(select venue_id from venue_booking_queue where user_name = '"+username+"' and is_booked=0)";
+            String q="select * from venue where venue_id IN(select venue_id from venue_booking_queue where user_name = '"+username+"')";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -182,7 +182,7 @@ public class DBQuery {
     public ArrayList get_added_services(String username){
         ArrayList al = new ArrayList();
         try{
-            String q = "select * from services where user_name='"+username+"' and is_booked=0";
+            String q = "select * from services where user_name='"+username+"'";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -218,7 +218,7 @@ public class DBQuery {
     public int book_venue(String username){
         int i=0;
         try{
-            String q = "update venue_booking_queue set is_booked=1 where user_name='"+username+"'";
+            String q = "insert into booked_venue(user_name,venue_id) select * from venue_booking_queue where user_name ='"+username+"'";
             con = DBConnection.getConnection();
             st = con.createStatement();
             i = st.executeUpdate(q);
@@ -232,7 +232,7 @@ public class DBQuery {
     public int book_service(String username){
         int i=0;
         try{
-            String q = "update services set is_booked=1 where user_name='"+username+"'";
+            String q = "insert into booked_services(user_name,service,category,`sub-category`,price) select * from services where user_name='"+username+"'";
             con = DBConnection.getConnection();
             st = con.createStatement();
             i = st.executeUpdate(q);
@@ -243,10 +243,31 @@ public class DBQuery {
         return i;
     }
     
+     public ArrayList get_booked_services(String username){
+        ArrayList al = new ArrayList();
+        try{
+            String q = "select * from booked_services where user_name = '"+username+"' and is_approved=0";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                 String service = rs.getString("service");
+                String cat = rs.getString("category");
+                String sub = rs.getString("sub-category");
+                String data = service+"#"+cat+"#"+sub;
+                al.add(data);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }   
+    
     public ArrayList get_booked_venues(String username){
         ArrayList al = new ArrayList();
         try{
-            String q = "select * from venue where venue_id IN (select venue_id from venue_booking_queue where user_name='"+username+"' and is_booked=1 and is_accepted=0)";
+            String q = "select * from venue where venue_id IN (select venue_id from booked_venue where user_name='"+username+"' and is_approved = 0)";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -267,10 +288,56 @@ public class DBQuery {
         return al;
     }
     
-     public ArrayList get_boooked_services(String username,int num){
+     public ArrayList get_paid_venues(int id){
         ArrayList al = new ArrayList();
         try{
-            String q = "select * from services where user_name = '"+username+"' and is_booked=1 and is_accepted="+num+"";
+            String q = "select * from venue where venue_id IN (select venue_id from paid_venue where transaction_id in (select transaction_id from payment where transaction_id="+id+"))";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                String name = rs.getString("venue_name");
+                String location = rs.getString("location");
+                String catogery = rs.getString("catogery");
+                String capacity = rs.getString("capacity");
+                String price = rs.getString("price");
+                
+                String data = name+"#"+location+"#"+catogery+"#"+capacity+"#"+price;
+                al.add(data);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }
+     
+
+    
+     public ArrayList get_all_paid_services(int id){
+        ArrayList al = new ArrayList();
+        try{
+            String q = "select * from paid_services where tranaction_id in (select transaction_id from payment where transaction_id = "+id+")";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                 String service = rs.getString("service");
+                String cat = rs.getString("category");
+                String sub = rs.getString("sub-category");
+                String data = service+"#"+cat+"#"+sub;
+                al.add(data);
+            }
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return al;
+    }   
+         public ArrayList get_approved_services(String username){
+        ArrayList al = new ArrayList();
+        try{
+            String q = "select * from booked_services where user_name='"+username+"' and is_approved=1";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -289,10 +356,11 @@ public class DBQuery {
         return al;
     }   
      
+     
     public ArrayList get_all_booked_services(int num){
         ArrayList al = new ArrayList();
         try{
-            String q = "select * from services where is_booked=1 and is_accepted="+num+"";
+            String q = "select * from booked_services where  is_approved="+num+"";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -316,7 +384,7 @@ public class DBQuery {
         ArrayList al = new ArrayList();
         
         try{
-            String q = "select b.user_name, v.venue_id,v.venue_name,v.location,v.catogery,v.capacity,v.price from venue v natural join venue_booking_queue b where is_booked=1 and is_accepted=0";
+            String q = "select b.user_name, v.venue_id,v.venue_name,v.location,v.catogery,v.capacity,v.price from venue v natural join booked_venue b where is_approved=0";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -343,7 +411,7 @@ public class DBQuery {
      public int completed_service(String username,String service,String category){
         int i=0;
         try{
-            String q = "update services set is_accepted=1 where user_name='"+username+"' and service='"+service+"' and category='"+category+"'";
+            String q = "update booked_services set is_approved=1 where user_name='"+username+"' and service='"+service+"' and category='"+category+"'";
             con = DBConnection.getConnection();
             st = con.createStatement();
             i = st.executeUpdate(q);
@@ -360,7 +428,7 @@ public class DBQuery {
         int i=0;
         int id = Integer.parseInt(venue_id);
         try{
-            String q = "update venue_booking_queue set is_accepted=1 where user_name='"+username+"' and venue_id='"+id+"'";
+            String q = "update booked_venue set is_approved=1 where user_name='"+username+"' and venue_id='"+id+"'";
             con = DBConnection.getConnection();
             st = con.createStatement();
             i = st.executeUpdate(q);
@@ -375,7 +443,7 @@ public class DBQuery {
     public ArrayList get_all_completed(){
         ArrayList al = new ArrayList();
         try{
-            String q =  "select b.user_name, v.venue_id,v.venue_name,v.location,v.catogery,v.capacity,v.price from venue v natural join venue_booking_queue b where is_booked=1 and is_accepted=1";
+            String q =  "select b.user_name, v.venue_id,v.venue_name,v.location,v.catogery,v.capacity,v.price from venue v natural join booked_venue b where is_approved=1";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -402,7 +470,7 @@ public class DBQuery {
     public ArrayList get_completed_booked_venue(String username){
         ArrayList al = new ArrayList();
         try{
-            String q = "select * from venue where venue_id IN (select venue_id from venue_booking_queue where user_name='"+username+"' and is_booked=1 and is_accepted=1)";
+            String q = "select * from venue where venue_id IN (select venue_id from booked_venue where user_name='"+username+"' and is_approved=1)";
             con = DBConnection.getConnection();
             st = con.createStatement();
             rs = st.executeQuery(q);
@@ -422,6 +490,204 @@ public class DBQuery {
         }
         return al;
     }
+    public void delete_service_added(String username){
+        
+        try{
+            String q1 ="delete from services where user_name='"+username+"'";
+           
+          con = DBConnection.getConnection();
+            st = con.createStatement();
+            st.executeUpdate(q1);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        
+    }
+    public void delete_venues_added(String username){
+        try{
+             String q2 = "delete from venue_booking_queue where user_name='"+username+"'";
+               con = DBConnection.getConnection();
+            st = con.createStatement();
+            st.execute(q2);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
     
+    public int check_transaction(int num){
+        int i=0;
+        try{
+            String q = "select * from payment where transaction_id="+num+"";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            if(rs.next())
+                i=1;
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return i;
+    }
     
+    public int insert_into_payment(int transaction,String username,String amount,String date){
+        int i=0;
+        try{
+            String q ="insert into payment values("+transaction+",'"+username+"','"+amount+"','"+date+"')";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            i = st.executeUpdate(q);
+        }   
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return i;
+    }
+    public int insert_into_paid_service(String username,int transaction_id){
+        int i=0;
+        try{
+            String q = "insert into paid_services (select p.transaction_id,b.service,b.category,b.`sub-category` from payment p ,booked_services b where p.transaction_id = "+transaction_id+" and b.user_name='"+username+"' and b.is_approved=1)";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            i = st.executeUpdate(q);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return i;
+    }
+    
+    public int delete_booked_services(String username,int num){
+        int i=0;
+        try{
+            String q = "delete from booked_services where user_name='"+username+"' and is_approved="+num+"";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            i = st.executeUpdate(q);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return i;
+    }
+    
+    public int insert_into_paid_venue(String username,int transaction_id){
+        int i=0;
+        try{
+            String q = "insert into paid_venue (select p.transaction_id,b.venue_id from payment p ,booked_venue b where p.transaction_id = "+transaction_id+" and b.user_name='"+username+"' and b.is_approved=1)";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            i = st.executeUpdate(q);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return i;
+    }
+    public int delete_from_booked_venue(String username,int num){
+        int i=0;
+        try{
+            String q = "delete from booked_venue where user_name='"+username+"' and is_approved="+num+"";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            i = st.executeUpdate(q);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return i;
+    }
+    
+    public ArrayList get_all_transactions(){
+        ArrayList al = new ArrayList();
+        try{
+            String q = "select * from payment";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                String transaction_id = rs.getString("transaction_id");
+                String username = rs.getString("user_name");
+                String amount = rs.getString("amount");
+                String date = rs.getString("date");
+                String data = transaction_id+"#"+username+"#"+amount+"#"+date;
+                al.add(data);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return al;
+    }
+    
+//    public ArrayList get_paid_venues(int id){
+//        ArrayList al = new ArrayList();
+//        try{
+//            String q = "select * from venue where venue_id in (select venue_id from paid_venue where transaction_id="+id+")";
+//            con = DBConnection.getConnection();
+//            st = con.createStatement();
+//            rs = st.executeQuery(q);
+//            while(rs.next()){
+//                String venue_name = rs.getString("venue_name");
+//                String location = rs.getString("location");
+//                String data = venue_name+"#"+location;
+//                al.add(data);
+//            }
+//        }
+//        catch(Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        return al;
+//    }
+    
+    public ArrayList get_paid_services(int id){
+        ArrayList al = new ArrayList();
+        try{
+            String q = "select * from paid_services where tranaction_id="+id+"";
+            con = DBConnection.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery(q);
+            while(rs.next()){
+                String venue_name = rs.getString("service");
+                String location = rs.getString("category");
+                String data = venue_name+"#"+location;
+                al.add(data);
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return al;
+    }
+    
+    public ArrayList get_all_transactions_of_a_user(String username){
+        ArrayList al = new ArrayList();
+        
+        try{
+           String q = "select * from payment where user_name='"+username+"'" ;
+           con = DBConnection.getConnection();
+           st = con.createStatement();
+           rs= st.executeQuery(q);
+           while(rs.next()){
+               String id = rs.getString("transaction_id");
+               String amount = rs.getString("amount");
+               String date = rs.getString("date");
+               String data = id+"#"+amount+"#"+date;
+               al.add(data);
+           }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return al;
+    }
 }
