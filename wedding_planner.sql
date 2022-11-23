@@ -124,9 +124,7 @@ CREATE TABLE `venue_booking_queue` (
 -- ----------------------------
 -- Records 
 -- ----------------------------
-INSERT INTO `paid_venue` VALUES ('87181', '75');
-INSERT INTO `payment` VALUES ('87181', 'yash', '150000', '2022-10-22');
-INSERT INTO `user` VALUES ('yash', 'yashwanth', 'k', '9888989', 'yashwanth@gmail.com', 'password');
+
 INSERT INTO `venue` VALUES ('0000000075', 'Venue_one', 'Bangalore', 'AC', '4000', '150000');
 INSERT INTO `venue` VALUES ('0000000076', 'Venue_two', 'Jayanagar', 'Non-AC', '3000', '120000');
 INSERT INTO `venue` VALUES ('0000000078', 'Venue_three', 'JP Nagar', 'AC', '5000', '200000');
